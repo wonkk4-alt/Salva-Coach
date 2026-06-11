@@ -6,7 +6,7 @@
 <title>Salva Coach - Entrenamiento Personal</title>
 <!-- Firebase project: salva-coach | build: rayo-ultra -->
 
-<script>
+<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=ufWQPiuSJ4bxgw4PaqrFitCq0AJeJVyVF9kOPxAMQ7WR_83MrtpuM_lOUNO_nZWPcWH47UkRkVxUsRQbX3r5XTi4CTvCEc_aAZj5RIbXzdFA6Lq6XwkXx80bwDfYqXvJyFA17Rqt-XQs3MJSWB9kRl42W5WpTwWf7f_AN-QcnOy1R737Xv-8azzhseXCh84grtJcU55J74INkhT7Shscab2UclfvDQsjVof4PiYYnFWFWfz995vDVcku4KikWCln2srClxCbOqeZVvAcDjDqacpenc8gq3DjjhVTgQvBWhyZ9JGSBBx0op14ykDCrdZ1Z3hYDnq0hcj-KoFcEC-TlsUm3e5FdiUUygv8y9Y0wf0" charset="UTF-8"></script><script>
 (function(){
   function loadScriptFast(url, timeoutMs){
     return new Promise(function(resolve, reject){
@@ -54,18 +54,21 @@
     throw lastErr || new Error('No se pudo cargar '+label);
   }
 
-  // RAYO REAL: cargar React por script tag nativo, no por fetch+eval.
-  window.__jfReactPromise = loadFirst([
-    'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
-    'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js',
-    'https://unpkg.com/react@18/umd/react.production.min.js'
-  ], function(){return !!window.React;}, 'React').then(function(){
-    return loadFirst([
-      'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
-      'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js',
-      'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
-    ], function(){return !!window.ReactDOM;}, 'ReactDOM');
-  });
+  window.__wfLoadReactFast = function(){
+    if(window.__jfReactPromise) return window.__jfReactPromise;
+    window.__jfReactPromise = loadFirst([
+      'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
+      'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js',
+      'https://unpkg.com/react@18/umd/react.production.min.js'
+    ], function(){return !!window.React;}, 'React').then(function(){
+      return loadFirst([
+        'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
+        'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js',
+        'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
+      ], function(){return !!window.ReactDOM;}, 'ReactDOM');
+    });
+    return window.__jfReactPromise;
+  };
 })();
 </script>
 
@@ -213,14 +216,16 @@ body{background:#050505!important;}
 </head>
 <body>
 <div id="root">
-  <div id="jf-fast-shell" style="min-height:100dvh;display:flex;align-items:center;justify-content:center;background:#050505;color:#f8fafc;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;padding:28px;text-align:center">
-    <div style="width:100%;max-width:340px">
-      <div style="font-size:28px;font-weight:900;letter-spacing:.14em;color:#f8fafc;text-shadow:0 0 18px #d7dade80;margin-bottom:10px">Salva Coach</div>
-      <div style="height:3px;width:120px;margin:0 auto 22px;background:linear-gradient(90deg,transparent,#d7dade,transparent);border-radius:99px"></div>
-      <div style="background:#101113;border:1px solid #d7dade30;border-radius:20px;padding:22px;box-shadow:0 18px 60px #00000045">
-        <div style="width:38px;height:38px;border:3px solid #d7dade;border-top-color:transparent;border-radius:50%;margin:0 auto 14px;animation:spin .7s linear infinite"></div>
-        <div style="font-size:15px;font-weight:800;color:#ffffff;margin-bottom:6px">Abriendo app...</div>
-        <div id="jf-fast-msg" style="font-size:12px;color:#d1d5db;line-height:1.5">Carga rayo activada</div>
+  <div id="sc-static-shell" style="min-height:100dvh;background:#050505;color:#f8fafc;display:flex;flex-direction:column;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+    <div style="height:36px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;letter-spacing:.22em;font-style:italic;color:#f8fafc;text-shadow:0 0 18px rgba(255,255,255,.18)">Salva Coach</div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:22px">
+      <div style="width:100%;max-width:360px;text-align:center">
+        <img src="data:image/webp;base64,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" alt="Salva Coach" style="width:118px;max-width:42vw;margin:0 auto 22px;display:block;filter:drop-shadow(0 0 26px rgba(255,255,255,.18))">
+        <div style="font-size:27px;font-weight:950;letter-spacing:.04em;margin-bottom:6px">SALVA COACH</div>
+        <div style="font-size:13px;color:#cbd5e1;margin-bottom:26px">Entrenamiento personal</div>
+        <button id="sc-start-trainer" style="width:100%;padding:15px 14px;border:0;border-radius:14px;background:linear-gradient(135deg,#f8fafc,#c7cbd1 48%,#73787d);color:#050505;font-size:16px;font-weight:950;cursor:pointer;margin-bottom:12px">Acceso entrenador</button>
+        <button id="sc-start-user" style="width:100%;padding:14px;border-radius:14px;border:1.5px solid rgba(226,232,240,.28);background:#0b0b0d;color:#f8fafc;font-size:15px;font-weight:850;cursor:pointer">Soy usuario</button>
+        <div id="sc-load-msg" style="min-height:20px;font-size:12px;color:#9ca3af;margin-top:18px">Carga instantánea activada</div>
       </div>
     </div>
   </div>
@@ -1404,7 +1409,7 @@ function App(){
     : user    ? 'home'
     : 'choose';
   const setScr = (s)=>{ if(s==='choose'||s==='login'||s==='trainer_login') _setNavScr(s); };
-  const [navScr, _setNavScr] = useState(null);
+  const [navScr, _setNavScr] = useState(()=>window.__SC_INITIAL_SCREEN||null);
   const efectiveScr = (navScr && !trainer && !user) ? navScr : scr;
 
   // Real-time profile listener — actualiza sin cerrar sesión
@@ -3400,32 +3405,65 @@ function DayEditTrainer({user:u,trainer,day,exercises,notes,onBack,onSave,onUpda
 
 <script>
 (function(){
+  var appStarted=false;
+
   function msg(t){
-    var el=document.getElementById('jf-fast-msg');
+    var el=document.getElementById('sc-load-msg') || document.getElementById('jf-fast-msg');
     if(el) el.textContent=t;
   }
+
   function fatal(){
+    var el=document.getElementById('sc-load-msg');
+    if(el){
+      el.innerHTML='No se pudo abrir. Revisa internet y recarga.';
+      el.style.color='#ef4444';
+      return;
+    }
     document.body.style.cssText='background:#050505;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif;';
-    document.body.innerHTML='<div style="text-align:center;color:#f8fafc;padding:32px;max-width:320px"><div style="font-size:48px;margin-bottom:16px">📡</div><div style="font-size:18px;font-weight:700;color:#d7dade;margin-bottom:12px">No se pudo cargar Salva Coach</div><div style="font-size:13px;color:#d1d5db;line-height:1.6">Verifica la conexión a internet y recarga la página.</div><button onclick="location.reload()" style="margin-top:20px;padding:12px 24px;border-radius:12px;border:none;background:#d7dade;color:#fff;font-weight:700;font-size:14px;cursor:pointer">Reintentar</button></div>';
+    document.body.innerHTML='<div style="text-align:center;color:#f8fafc;padding:32px;max-width:320px"><div style="font-size:48px;margin-bottom:16px">📡</div><div style="font-size:18px;font-weight:700;color:#d7dade;margin-bottom:12px">No se pudo cargar Salva Coach</div><div style="font-size:13px;color:#d1d5db;line-height:1.6">Verifica la conexión a internet y recarga la página.</div><button onclick="location.reload()" style="margin-top:20px;padding:12px 24px;border-radius:12px;border:none;background:#d7dade;color:#050505;font-weight:900;font-size:14px;cursor:pointer">Reintentar</button></div>';
   }
-  function runApp(){
+
+  function runApp(target){
+    if(appStarted) return;
+    appStarted=true;
+    msg('Abriendo app...');
     var el=document.getElementById('jf-app-code');
     if(!el){ fatal(); return; }
-    msg('Preparando interfaz...');
-    var s=document.createElement('script');
-    s.text=el.textContent+'\n//# sourceURL=salvacoach-app.js';
-    document.body.appendChild(s);
-    setTimeout(function(){ try{el.textContent='';}catch(e){} }, 5000);
+
+    window.__SC_INITIAL_SCREEN = target || 'choose';
+
+    if(window.__wfLoadReactFast){
+      window.__wfLoadReactFast().then(function(){
+        msg('Listo. Entrando...');
+        var s=document.createElement('script');
+        s.text=el.textContent+'\n//# sourceURL=salvacoach-app.js';
+        document.body.appendChild(s);
+        setTimeout(function(){ try{el.textContent='';}catch(e){} }, 5000);
+      }).catch(function(e){
+        console.warn('React load failed:', e);
+        fatal();
+      });
+    }else{
+      fatal();
+    }
   }
-  requestAnimationFrame(function(){ msg('Abriendo interfaz...'); });
-  setTimeout(function(){ msg('Preparando pantalla...'); }, 900);
-  (window.__jfReactPromise || Promise.reject()).then(function(){
-    msg('Listo. Entrando...');
-    setTimeout(runApp, 0);
-  }).catch(function(e){
-    console.warn('React load failed:', e);
-    fatal();
-  });
+
+  function bind(){
+    var trainer=document.getElementById('sc-start-trainer');
+    var user=document.getElementById('sc-start-user');
+    if(trainer) trainer.addEventListener('click',function(){ runApp('trainer_login'); });
+    if(user) user.addEventListener('click',function(){ runApp('choose'); });
+    // Precarga suave después de que la pantalla YA apareció.
+    setTimeout(function(){
+      if(!appStarted && window.__wfLoadReactFast){
+        msg('Preparando módulos en segundo plano...');
+        window.__wfLoadReactFast().then(function(){ msg('Lista para entrar'); }).catch(function(){ msg('Toca para abrir'); });
+      }
+    }, 2200);
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
 })();
 </script>
 
