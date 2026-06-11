@@ -6,17 +6,12 @@
 <title>Salva Coach - Entrenamiento Personal</title>
 <!-- Firebase project: salva-coach | build: rayo-ultra -->
 
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=KA9Z0xqM1D0J5YfafR0AuZmFv8W6fkR6eU8Lq5CAEos1i-vmlw3P0-SunjZYe_UYUoK4PUI6aRM7-s988Pa6jNv2TRtatTmMYAviMkHzHNxjL9tBItkAVuZxUrmY9Np8df_RBxq2Yh1ff4uxdVYgf9ctlb8BrZ4JTqc_ESWSfaXOWydgKQAI8yIzDuxC76vGHZUCte-HhmUChOnc_vR0Mn-2H-Tgv3LMKQ5VDO00VZWrazF7YYqBez6RS-KGMaWxF7XybfsBON8aAeRcjygKF9NhMSKeDAvb2OI1bpwWTUvJuisGSr9rtiqQahyg84Vt_yjAKOxKHCmwkbIyBJ8fvw" charset="UTF-8"></script><script>
+<script>
 (function(){
-  function jfEvalScript(code, label){
-    var s=document.createElement('script');
-    s.text=String(code||'')+'\n//# sourceURL='+label;
-    document.head.appendChild(s);
-    setTimeout(function(){ try{s.remove();}catch(e){} }, 0);
-  }
-
-  function jfLoadRemoteScript(url, timeoutMs){
+  function loadScriptFast(url, timeoutMs){
     return new Promise(function(resolve, reject){
+      if(url.indexOf('react-dom')>-1 && window.ReactDOM) return resolve(true);
+      if(url.indexOf('react.production')>-1 && window.React) return resolve(true);
       var done=false;
       var s=document.createElement('script');
       var t=setTimeout(function(){
@@ -24,10 +19,10 @@
         done=true;
         try{s.remove();}catch(e){}
         reject(new Error('timeout '+url));
-      }, timeoutMs||4500);
-      s.async=true;
-      s.crossOrigin='anonymous';
+      }, timeoutMs || 3200);
       s.src=url;
+      s.async=false;
+      s.crossOrigin='anonymous';
       s.onload=function(){
         if(done) return;
         done=true;
@@ -38,66 +33,38 @@
         if(done) return;
         done=true;
         clearTimeout(t);
-        try{s.remove();}catch(e){}
         reject(new Error('error '+url));
       };
       document.head.appendChild(s);
     });
   }
 
-  async function jfLoadCachedScript(cacheKey, urls, testFn, label){
-    try{
-      if(testFn()) return true;
-      var cached=localStorage.getItem(cacheKey);
-      if(cached){
-        jfEvalScript(cached, label+'-cached.js');
-        if(testFn()) return true;
-      }
-    }catch(e){}
-
+  async function loadFirst(urls, testFn, label){
+    if(testFn()) return true;
+    var lastErr=null;
     for(var i=0;i<urls.length;i++){
-      var url=urls[i];
       try{
-        var res=await fetch(url,{cache:'force-cache', mode:'cors'});
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        var txt=await res.text();
-        try{ localStorage.setItem(cacheKey, txt); }catch(e){}
-        jfEvalScript(txt, label+'.js');
+        await loadScriptFast(urls[i], 3200);
         if(testFn()) return true;
       }catch(e){
-        console.warn('fetch script fallback:', url, e);
+        lastErr=e;
+        console.warn('CDN fallback '+label+':', urls[i], e);
       }
     }
-
-    for(var j=0;j<urls.length;j++){
-      try{
-        await jfLoadRemoteScript(urls[j], 4500);
-        if(testFn()) return true;
-      }catch(e){
-        console.warn('script tag fallback:', urls[j], e);
-      }
-    }
-    throw new Error('No se pudo cargar '+label);
+    throw lastErr || new Error('No se pudo cargar '+label);
   }
 
-  window.__jfReactPromise = jfLoadCachedScript(
-    'jf_cache_react_18_prod_v2',
-    [
-      'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js',
-      'https://unpkg.com/react@18/umd/react.production.min.js'
-    ],
-    function(){return !!window.React;},
-    'react18'
-  ).then(function(){
-    return jfLoadCachedScript(
-      'jf_cache_reactdom_18_prod_v2',
-      [
-        'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js',
-        'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
-      ],
-      function(){return !!window.ReactDOM;},
-      'reactdom18'
-    );
+  // RAYO REAL: cargar React por script tag nativo, no por fetch+eval.
+  window.__jfReactPromise = loadFirst([
+    'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
+    'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js',
+    'https://unpkg.com/react@18/umd/react.production.min.js'
+  ], function(){return !!window.React;}, 'React').then(function(){
+    return loadFirst([
+      'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
+      'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js',
+      'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
+    ], function(){return !!window.ReactDOM;}, 'ReactDOM');
   });
 })();
 </script>
@@ -253,7 +220,7 @@ body{background:#050505!important;}
       <div style="background:#101113;border:1px solid #d7dade30;border-radius:20px;padding:22px;box-shadow:0 18px 60px #00000045">
         <div style="width:38px;height:38px;border:3px solid #d7dade;border-top-color:transparent;border-radius:50%;margin:0 auto 14px;animation:spin .7s linear infinite"></div>
         <div style="font-size:15px;font-weight:800;color:#ffffff;margin-bottom:6px">Abriendo app...</div>
-        <div id="jf-fast-msg" style="font-size:12px;color:#d1d5db;line-height:1.5">Carga rápida activada</div>
+        <div id="jf-fast-msg" style="font-size:12px;color:#d1d5db;line-height:1.5">Carga rayo activada</div>
       </div>
     </div>
   </div>
@@ -300,55 +267,49 @@ var auth, db_fs;
 var __jfFirebasePromise = null;
 
 function jfLoadScriptOnce(src){
-  const key = 'jf_cache_' + src.replace(/[^a-z0-9]+/gi,'_').slice(0,80);
   const testFirebase = function(){
     if(src.indexOf('firebase-app-compat')>-1) return typeof firebase !== 'undefined';
     if(src.indexOf('firebase-auth-compat')>-1) return typeof firebase !== 'undefined' && !!firebase.auth;
     if(src.indexOf('firebase-firestore-compat')>-1) return typeof firebase !== 'undefined' && !!firebase.firestore;
     return false;
   };
-  function evalCode(code){
-    const s=document.createElement('script');
-    s.text=String(code||'')+'\\n//# sourceURL='+key+'.js';
-    document.head.appendChild(s);
-    setTimeout(()=>{try{s.remove();}catch(e){}},0);
-  }
-  async function fetchAndEval(){
-    try{
-      const cached=localStorage.getItem(key);
-      if(cached){
-        evalCode(cached);
-        if(testFirebase()) return true;
-      }
-    }catch(e){}
-    try{
-      const res=await fetch(src,{cache:'force-cache', mode:'cors'});
-      if(res.ok){
-        const txt=await res.text();
-        try{localStorage.setItem(key, txt);}catch(e){}
-        evalCode(txt);
-        if(testFirebase()) return true;
-      }
-    }catch(e){ console.warn('firebase fetch fallback:', src, e); }
+  if(testFirebase()) return Promise.resolve(true);
 
-    return new Promise(function(resolve, reject){
-      if(document.querySelector('script[data-jf-dynamic="'+src+'"]')){
-        var existing = document.querySelector('script[data-jf-dynamic="'+src+'"]');
-        if(existing.getAttribute('data-loaded') === '1') return resolve(true);
-        existing.addEventListener('load', function(){ resolve(true); }, {once:true});
-        existing.addEventListener('error', reject, {once:true});
-        return;
-      }
-      var s = document.createElement('script');
-      s.src = src;
-      s.async = true;
-      s.setAttribute('data-jf-dynamic', src);
-      s.onload = function(){ s.setAttribute('data-loaded','1'); resolve(true); };
-      s.onerror = reject;
-      document.head.appendChild(s);
-    });
-  }
-  return fetchAndEval();
+  return new Promise(function(resolve, reject){
+    const existing = document.querySelector('script[data-jf-dynamic="'+src+'"]');
+    if(existing){
+      if(existing.getAttribute('data-loaded') === '1') return resolve(true);
+      existing.addEventListener('load', function(){ resolve(true); }, {once:true});
+      existing.addEventListener('error', reject, {once:true});
+      return;
+    }
+    let done=false;
+    const s = document.createElement('script');
+    const t = setTimeout(function(){
+      if(done) return;
+      done=true;
+      try{s.remove();}catch(e){}
+      reject(new Error('timeout '+src));
+    }, 4200);
+    s.src = src;
+    s.async = false;
+    s.crossOrigin = 'anonymous';
+    s.setAttribute('data-jf-dynamic', src);
+    s.onload = function(){
+      if(done) return;
+      done=true;
+      clearTimeout(t);
+      s.setAttribute('data-loaded','1');
+      resolve(true);
+    };
+    s.onerror = function(e){
+      if(done) return;
+      done=true;
+      clearTimeout(t);
+      reject(e || new Error('error '+src));
+    };
+    document.head.appendChild(s);
+  });
 }
 
 function jfLoadFirebaseLibs(){
@@ -3456,8 +3417,8 @@ function DayEditTrainer({user:u,trainer,day,exercises,notes,onBack,onSave,onUpda
     document.body.appendChild(s);
     setTimeout(function(){ try{el.textContent='';}catch(e){} }, 5000);
   }
-  requestAnimationFrame(function(){ msg('Cargando módulos esenciales...'); });
-  setTimeout(function(){ msg('Conectando módulos rápidos...'); }, 900);
+  requestAnimationFrame(function(){ msg('Abriendo interfaz...'); });
+  setTimeout(function(){ msg('Preparando pantalla...'); }, 900);
   (window.__jfReactPromise || Promise.reject()).then(function(){
     msg('Listo. Entrando...');
     setTimeout(runApp, 0);
